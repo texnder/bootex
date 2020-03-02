@@ -1,0 +1,19 @@
+{
+    "name": "texnder/bootex",
+    "description": "namespace container for bootstrap service integration",
+    "type": "library",
+    "keywords": ["texnder", "bootex", "namespace container"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Inderjeet",
+            "email": "inderjeetchohana1431996@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "bootex\\": "src"
+        }
+    }
+}
