@@ -1,5 +1,8 @@
 <?php
 
+$vendorDir = dirname(dirname(__FILE__));
+$baseDir = dirname($vendorDir);
+
 return [
 
 	/**
@@ -10,6 +13,6 @@ return [
 	 | available in bootex service object automaticaly..
 	 */
 
-	"bootex" => __DIR__. "/src"
+	"bootex\\" => array($vendorDir. "/bootex/src")
 
 ];

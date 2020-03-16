@@ -35,16 +35,10 @@ class services
 	 */
 	private function getcomposerPSR4($psr4Path)
 	{
-		$psr4 = $this->checkfilePath($psr4Path);
+		$psr4 = $this->truePath($psr4Path);
 
 		if (is_array($psr4)) {
-
 			return $this->mergeDefaultPSR4($psr4);
-
-		}elseif (is_string($psr4)) {
-
-			$this->getcomposerPSR4($psr4);
-
 		}
 		
 		return $this->psr4();
@@ -86,7 +80,7 @@ class services
 	 * @param 	$namespace		String(parent directory namespace)
 	 * @return 	array
 	 */
-	private function ServiceFilesList(string $dir,string $namespace)
+	private function ServiceFilesList(string $namespace,string $dir)
 	{
 	    $scandir = $this->directoryFiles($dir);
 
@@ -100,10 +94,10 @@ class services
 	    foreach($scandir as $dir_or_file){
 
 	    	if (preg_match("/\.php/", $dir_or_file))
-	    		$class[] = $namespace."\\".$dir_or_file;
+	    		$class[] = ($namespace !== "") ? $namespace."\\".$dir_or_file : $dir_or_file;
 
 	        if(is_dir($dir.'/'.$dir_or_file)){
-	        	$class[] = $this->ServiceFilesList($dir.'/'.$dir_or_file,$this->generateNamespace($namespace,$dir_or_file));
+	        	$class[] = $this->ServiceFilesList($this->generateNamespace($namespace,$dir_or_file),$dir.'/'.$dir_or_file);
 	        }
 	    }
 	    return $class;
@@ -118,7 +112,7 @@ class services
 	*/
 	private function generateNamespace($dir,$sub_dir)
 	{
-		return $dir."\\".$sub_dir;
+		return ($dir !== "") ? $dir."\\".$sub_dir : $sub_dir;
 	}
 
 	
@@ -130,22 +124,37 @@ class services
 	private function startCompilation($composerPSR4)
 	{
 		foreach ($composerPSR4 as $namespace => $dir) {
-			$classes = $this->ServiceFilesList($dir,$namespace);
+			if (count($dir) > 1) {
+				$classes = $this->pushEachFilesInArray(trim($namespace,"\\"), $dir);
+				
+			}else{
+				$classes = $this->ServiceFilesList(trim($namespace,"\\"),$dir[0]);
+			}
+
 			$this->setServices($classes);
 		}
 	}
 
-	
 	/**
-	 * check path is true or fake
+	 * if one namespace uses many time for diffrent directory
 	 *
-	 * @param string
+	 * @param 	$dir 			String(directory Path)
+	 * @param 	$namespace		String(parent directory namespace)
+	 * @return 	array
 	 */
-	private function checkfilePath($psr4Path)
-	{
-		return ($psr4Path) ? $this->truePath($psr4Path) : null;
+	private function pushEachFilesInArray($namespace, $dir)
+	{ 
+		$arry = array();
+
+		foreach ($dir as $path) {
+
+			$arry[] = $this->ServiceFilesList($namespace,$path);
+		}
+
+		return $arry;
 	}
 
+	
 	/**
 	 * scan directory for file names..
 	 * 
@@ -184,7 +193,7 @@ class services
 	 */
 	private function psr4()
 	{
-		$psr4 = include __dir__."/../psr4.php";
+		$psr4 = include __DIR__. "/.." ."/psr4.php";
 		return $psr4;
 	}
 
@@ -199,10 +208,7 @@ class services
 	{
 		if (file_exists($psr4Path)) {
 			$psr4 = include "{$psr4Path}";
-
-			if (is_array($psr4)) {
-				return isset($psr4['psr4']) ? $psr4['psr4'] : [];
-			}
+			return $psr4;
 		}
 	}
 }
