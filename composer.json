@@ -10,6 +10,11 @@
             "email": "inderjeetchohana1431996@gmail.com"
         }
     ],
+    
+    "require": {
+        "texnder/aditex" : "1.0.*"
+    },
+
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
