@@ -8,6 +8,7 @@ abstract class bluff
 {
 	/**
 	 * accessor must be defined in child class
+	 * it should return class name
 	 * 
 	 * @return 	string|object
 	 */
