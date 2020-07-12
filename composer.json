@@ -1,6 +1,6 @@
 {
     "name": "texnder/bootex",
-    "description": "namespace container for bootstrap service integration",
+    "description": "bootstrap operation operator for service integration",
     "type": "library",
     "keywords": ["texnder", "bootex", "namespace container"],
     "license": "MIT",
