@@ -2,9 +2,12 @@
 namespace bootex;
 
 use bootex\bluff;
+use sessnex\persistent\persistentTrait;
 
 abstract class Middelware extends bluff
 {
+	
+	use persistentTrait;
 	
 	/** 
 	 * check user is logged in or authenticated
