@@ -1,10 +1,9 @@
 <?php
 namespace bootex;
 
-use bootex\bluff;
 use sessnex\persistent\persistentTrait;
 
-abstract class Middelware extends bluff
+class Middelware
 {
 	
 	use persistentTrait;
@@ -64,11 +63,4 @@ abstract class Middelware extends bluff
 		}
 	}
 
-	/**
-	 * set self class accessor to call using any middelware class
-	 */
-	public static function getAccessor()
-	{
-		return self;
-	}
 }
