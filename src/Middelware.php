@@ -2,6 +2,7 @@
 namespace bootex;
 
 use sessnex\persistent\persistentTrait;
+use SessionManager;
 
 class Middelware
 {
